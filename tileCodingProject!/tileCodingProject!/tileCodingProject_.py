@@ -1,62 +1,89 @@
 ﻿import numpy
-import math
+from pylab import zeros, sin, cos, normal, random
+from Tilecoder import numTilings, tilecode
 
-#globals
-numTilings = 8 
-numGridSquares = 10.0
-smallGridTotal = 6.0
-tileMovementValue = -0.6/8
+# initialize weights appropriately here
+theta = numpy.zeros(968)
+print theta
+
+# initialize step size parameter appropriately here
+alpha = 0.1/numTilings
+
+# initialize your global list of tile indices here
+totalNumberOfTileIndices = 968
 
 
     
+def f(x,y):
+    # write your linear function approximator here (5 lines or so)
+    #First get the value from the tilecode, aka Phiture vector (lmao)
 
-#say 4 and 2
-def tilecode(x,y,tileIndices):
-    #Get amount of division.
-    ySpacing = smallGridTotal / numGridSquares
-    xSpacing = smallGridTotal /numGridSquares
-    
-    print ySpacing
-    print xSpacing
-    #This constant starts at zero and represents the movement of the tilings. 
-    movementConstant = 0
+    #First get the index. 
+    indexGiven = tilecode(x,y)
 
 
-    for i in range (0,8):
-        ycoord = 0
-        xcoord = 0
+    thetaValue = theta(indexGiven)
 
-        
-        index = i* 121
-        movementConstant = i * tileMovementValue
 
-        xcoord = (x- movementConstant)/xSpacing   
-        ycoord = (y- movementConstant)/ySpacing
-        
 
-        xcoord= math.floor(xcoord)
-        ycoord= math.floor(ycoord)
 
-        print xcoord, " xcoord " , ycoord, " y coord"  
 
-        index = index + ( ycoord * 11 + xcoord)
-        tileIndices[i] = index
-
-  
+    print "f called"
    
+def learn(x,y,target):
+    # write your gradient descent learning algorithm here (3 lines or so)
+    print "learn called" 
 
+def test1():
+   for x,y,target in \
+         [ (0.1, 0.1, 3.0), \
+           (4.0, 2.0, -1.0), \
+           (5.99, 5.99, 2.0), \
+           (4.0, 2.1, -1.0) ]:
+        before = f(x,y)
+        learn(x,y,target)
+        after = f(x,y)
+        print 'Example (', x, ',', y, ',', target, '):', 
+        print '    f before learning: ', before, 
+        print '    f after learning : ', after
+    
+def targetFunction(x,y):
+    return sin(x-3.0)*cos(y) + normal(0,0.1)
 
+def train(numSteps):
+    for i in range(numSteps):
+        x = random() * 6.0
+        y = random() * 6.0
+        target = targetFunction(x,y)
+        learn(x,y,target)
+    
+def writeF(filename):
+    fout = open(filename, 'w')
+    steps = 50
+    for i in range(steps):
+        for j in range(steps):
+            target = f(i * 6.0/steps, j * 6.0/steps)
+            fout.write(repr(target) + ' ')
+        fout.write('\n')
+    fout.close()
+        
+def MSE(sampleSize):
+    totalSE = 0.0
+    for i in range(sampleSize):
+        x = random() * 6.0
+        y = random() * 6.0
+        error = targetFunction(x,y) - f(x,y)
+        totalSE = totalSE + error * error
+    print 'The estimated MSE: ', (totalSE / sampleSize)
+    
+def test2():
+    train(20)
+    writeF('f20')
+    MSE(10000)
+    for i in range(10):
+        train(1000)
+        MSE(10000)
+    writeF('f10000')
 
-def printTileCoderIndices(x,y):
-    tileIndices = [-1]*numTilings
-    tilecode(x,y,tileIndices)
-    print 'Tile indices for input (',x,',',y,') are : ', tileIndices
+test1()
 
-printTileCoderIndices(0.1,0.1)
-printTileCoderIndices(4.0,2.0)
-printTileCoderIndices(5.99,5.99)
-printTileCoderIndices(4.0,2.1)
-
-printTileCoderIndices(6.0,6.0)
-
-printTileCoderIndices(1019191.0,12919221.0)

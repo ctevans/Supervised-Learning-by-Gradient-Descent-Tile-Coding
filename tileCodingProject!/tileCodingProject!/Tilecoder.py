@@ -1,10 +1,10 @@
 ﻿import numpy
-
+import math
 
 #globals
-numTilings = 8
-numGridSquares = 10
-smallGridTotal = 6
+numTilings = 8 
+numGridSquares = 10.0
+smallGridTotal = 6.0
 tileMovementValue = -0.6/8
 
 
@@ -15,23 +15,27 @@ def tilecode(x,y,tileIndices):
     #Get amount of division.
     ySpacing = smallGridTotal / numGridSquares
     xSpacing = smallGridTotal /numGridSquares
-    
     #This constant starts at zero and represents the movement of the tilings. 
     movementConstant = 0
-    print 192192
-    print 32131232123123
-    for i in range (0,7):
 
+
+    for i in range (0,8):
+        ycoord = 0
         xcoord = 0
-        ycoord = 0 
 
+        
+        index = i* 121
         movementConstant = i * tileMovementValue
-        print "spaaaaaace", ySpacing, xSpacing 
-        xcoord = x/(xSpacing + movementConstant)
-        ycoord = y/(ySpacing + movementConstant)
 
-        index = ycoord * 11 + xcoord
-        print index
+        xcoord = (x- movementConstant)/xSpacing   
+        ycoord = (y- movementConstant)/ySpacing
+        
+
+        xcoord= math.floor(xcoord)
+        ycoord= math.floor(ycoord)
+
+
+        index = index + ( ycoord * 11 + xcoord)
         tileIndices[i] = index
 
   
@@ -48,4 +52,5 @@ printTileCoderIndices(0.1,0.1)
 printTileCoderIndices(4.0,2.0)
 printTileCoderIndices(5.99,5.99)
 printTileCoderIndices(4.0,2.1)
-    
+
+printTileCoderIndices(6.0,6.0)
