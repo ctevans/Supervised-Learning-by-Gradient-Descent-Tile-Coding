@@ -14,6 +14,7 @@ def f(x,y):
     f = 0
     for i in range (0, numTilings):
         index = tileIndices[i]
+        index = int(index)
         f = f + weight[index]
     return f
    
@@ -23,6 +24,7 @@ def learn(x,y,target):
     F = f(x, y)
     for i in range (0, numTilings):
         index = tileIndices[i]
+        index = int(index)
         weight[index] = weight[index] + alpha * (target - F)
 
 def test1():
