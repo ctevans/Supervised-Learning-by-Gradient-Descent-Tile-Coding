@@ -1,38 +1,29 @@
-﻿import numpy
-from pylab import zeros, sin, cos, normal, random
+﻿from pylab import zeros, sin, cos, normal, random
 from Tilecoder import numTilings, tilecode
 
 # initialize weights appropriately here
-theta = numpy.zeros(968)
-print theta
-
+weight = [0,0] * 968
 # initialize step size parameter appropriately here
 alpha = 0.1/numTilings
-
 # initialize your global list of tile indices here
-totalNumberOfTileIndices = 968
-
-
+tileIndices = [-1]*numTilings
     
 def f(x,y):
     # write your linear function approximator here (5 lines or so)
-    #First get the value from the tilecode, aka Phiture vector (lmao)
-
-    #First get the index. 
-    indexGiven = tilecode(x,y)
-
-
-    thetaValue = theta(indexGiven)
-
-
-
-
-
-    print "f called"
+    tilecode(x, y, tileIndices)
+    f = 0
+    for i in range (0, numTilings):
+        index = tileIndices[i]
+        f = f + weight[index]
+    return f
    
 def learn(x,y,target):
     # write your gradient descent learning algorithm here (3 lines or so)
-    print "learn called" 
+    tilecode(x, y, tileIndices)
+    F = f(x, y)
+    for i in range (0, numTilings):
+        index = tileIndices[i]
+        weight[index] = weight[index] + alpha * (target - F)
 
 def test1():
    for x,y,target in \

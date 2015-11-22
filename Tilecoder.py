@@ -1,7 +1,31 @@
-numTilings = 8
-    
+﻿import math
+
+#globals
+numTilings = 8 
+numGridSquares = 10.0
+smallGridTotal = 6.0
+tileMovementValue = -0.6/8
+   
+
 def tilecode(x,y,tileIndices):
-    # write your tilecoder here (5 lines or so)
+    #This constant starts at zero and represents the movement of the tilings. 
+    movementConstant = 0
+
+    for i in range (0,numTilings):
+        
+        index = i* 121
+        movementConstant = i * tileMovementValue
+
+        xcoord = (x- movementConstant)/0.6  
+        ycoord = (y- movementConstant)/0.6
+        
+
+        xcoord= math.floor(xcoord)
+        ycoord= math.floor(ycoord)
+
+
+        index = index + ( ycoord * 11 + xcoord)
+        tileIndices[i] = int(index)
     
     
 def printTileCoderIndices(x,y):
