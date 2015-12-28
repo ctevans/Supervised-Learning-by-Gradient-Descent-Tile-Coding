@@ -3,7 +3,7 @@ Learning algorithm we use is stochastic gradient descent in the weights of a lin
 
 Language: Python 2.7
 IDE: Visual Studio 2015
- 
+  
 ###Description:
 The sentence above literally describes what is going on. We have three python files here, each with it's own particular purpose.
 
